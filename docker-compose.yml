@@ -1,69 +1,48 @@
 version: "3.9"
+
+
 services:
 
 #  security:
-#    build:
-#      context: ./microservice_security
-#      dockerfile: dockerfile
-#    command: 'python app.py'
+#    image: seanhorner/utopia-backend-microservice-security
 #    ports:
 #      - "5080:5000"
-#    volumes:
-#      - ./microservice_security:/app
 #    links:
 #      - "db:database"
 
   flights:
-    build:
-      context: ./microservice_flights
-      dockerfile: dockerfile
-    command: 'python app.py'
+    image: seanhorner/utopia-backend-microservice-flights
     ports:
       - "5081:5000"
-    volumes:
-      - ./microservice_flights:/app
     links:
+      # - "security:sec"
       - "db:database"
 
   users:
-    build:
-      context: ./microservice_users
-      dockerfile: dockerfile
-    command: 'python app.py'
+    image: seanhorner/utopia-backend-microservice-users
     ports:
       - "5082:5000"
-    volumes:
-      - ./microservice_users:/app
     links:
+      # - "security:sec"
       - "db:database"
 
   bookings:
-    build:
-      context: ./microservice_bookings
-      dockerfile: dockerfile
-    command: 'python app.py'
+    image: seanhorner/utopia-backend-microservice-bookings
     ports:
       - "5083:5000"
-    volumes:
-      - ./microservice_bookings:/app
     links:
+      # - "security:sec"
       - "db:database"
 
 #  data_loading:
-#    build:
-#      context: ./microservice_data_loader
-#      dockerfile: dockerfile
-#    command: 'python app.py'
+#    image: seanhorner/utopia-backend-microservice-data_loading
 #    ports:
 #      - "5084:5000"
-#    volumes:
-#      - ./microservice_data_loader
 #    links:
+#      # - "security:sec"
 #      - "db:database"
 
   db:
-    image: mysql
-    volumes:
-      - ./database_setup/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    image: seanhorner/utopia-backend-database
     ports:
-      - "6603:3306"
+      - "33066:3306"

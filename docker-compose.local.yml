@@ -1,0 +1,76 @@
+version: "3.9"
+services:
+
+#  security:
+#    build:
+#      context: ./microservice_security
+#      dockerfile: dockerfile
+#    command: 'python app.py'
+#    ports:
+#      - "5080:5000"
+#    volumes:
+#      - ./microservice_security:/app
+#    links:
+#      - "db:database"
+
+  flights:
+    build:
+      context: ./microservice_flights
+      dockerfile: dockerfile
+    command: 'python app.py'
+    ports:
+      - "5081:5000"
+    volumes:
+      - ./microservice_flights:/app
+    links:
+      - "db:database"
+
+  users:
+    build:
+      context: ./microservice_users
+      dockerfile: dockerfile
+    command: 'python app.py'
+    ports:
+      - "5082:5000"
+    volumes:
+      - ./microservice_users:/app
+    links:
+      - "db:database"
+
+  bookings:
+    build:
+      context: ./microservice_bookings
+      dockerfile: dockerfile
+    command: 'python app.py'
+    ports:
+      - "5083:5000"
+    volumes:
+      - ./microservice_bookings:/app
+    links:
+      - "db:database"
+
+#  data_loading:
+#    build:
+#      context: ./microservice_data_loader
+#      dockerfile: dockerfile
+#    command: 'python app.py'
+#    ports:
+#      - "5084:5000"
+#    volumes:
+#      - ./microservice_data_loader
+#    links:
+#      - "db:database"
+
+  db:
+    image: mysql/mysql-server:latest
+    volumes:
+      - ./database_setup/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "UtopiaAirlines4TheWin!"
+      MYSQL_ROOT_USER: "root"
+      MYSQL_DATABASE: "utopia"
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "UtopiaAirlines4TheWin!"
+    ports:
+      - "33066:3306"
