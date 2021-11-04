@@ -34,13 +34,17 @@ services:
       # - "security:sec"
       - "db:database"
 
-#  data_loading:
-#    image: seanhorner/utopia-backend-microservice-data_loading
-#    ports:
-#      - "5084:5000"
-#    links:
-#      # - "security:sec"
-#      - "db:database"
+  data_loading:
+    image: seanhorner/utopia-backend-microservice-data_loading
+    ports:
+      - "5084:5000"
+    links:
+      # - "security:sec"
+      - "db:database"
+    depends_on:
+      - users
+      - flights
+      - bookings
 
   db:
     image: seanhorner/utopia-backend-database

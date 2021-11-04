@@ -49,17 +49,21 @@ services:
     links:
       - "db:database"
 
-#  data_loading:
-#    build:
-#      context: ./microservice_data_loader
-#      dockerfile: dockerfile
-#    command: 'python app.py'
-#    ports:
-#      - "5084:5000"
-#    volumes:
-#      - ./microservice_data_loader
-#    links:
-#      - "db:database"
+  data_loading:
+    build:
+      context: ./microservice_data_loader
+      dockerfile: dockerfile
+    command: 'python app.py'
+    ports:
+      - "5084:5000"
+    volumes:
+      - ./microservice_data_loader:/app
+    links:
+      - "db:database"
+    depends_on:
+      - users
+      - flights
+      - bookings
 
   db:
     image: mysql/mysql-server:latest
