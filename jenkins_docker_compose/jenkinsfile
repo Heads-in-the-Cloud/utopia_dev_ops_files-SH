@@ -1,0 +1,46 @@
+pipeline {
+    agent {
+        node {
+            label 'aws-ready'
+            customWorkspace "${SH_ECS_DIRECTORY}"
+        }
+    }
+
+    environment {
+        ECS_CONTEXT_NAME = "aws_ecs-sh"
+        ORG_ECR_URI = '${ORG_ACCOUNT_NUM}.dkr.ecr.${region}.amazonaws.com'
+
+        COMPOSE_FILE = "jenkins_docker_compose/docker-compose.yml"
+    }
+
+    stages {
+        stage("Docker-Compose Set-Up") {
+            steps {
+                echo 'Setting up Docker context and getting repo credentials...'
+                sh 'docker context use ${ECS_CONTEXT_NAME}'
+                sh 'aws ecr get-login-password --region ${region} |docker login --username AWS --password-stdin ${ORG_ECR_URI}'
+            }
+        }
+
+        stage("Docker-Compose Deployment") {
+            steps {
+                echo 'Bringing services online...'
+                sh 'docker-compose -f ${COMPOSE_FILE} up'
+            }
+        }
+
+        stage("Docker-Compose Running") {
+            steps {
+                echo 'Printing running services...'
+                sh "docker ps"
+            }
+        }
+
+        stage("Docker-Compose Take Down") {
+            steps {
+                echo 'Bringing services down...'
+                sh 'docker-compose -f ${COMPOSE_FILE} down'
+            }
+        }
+    }
+}
