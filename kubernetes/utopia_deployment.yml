@@ -1,0 +1,117 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookings-deployment
+  labels:
+    app: bookings
+spec:
+  replicas: 1
+  selector:
+    matchLables:
+      app: bookings
+  template:
+    metadata:
+      labels:
+        app: bookings
+    spec:
+      containers:
+        - name: bookings
+          image: public.eks.aws/b9s2q8s8/utopia_backend_bookings_microservice
+          ports:
+            - containerPort: 5000
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flights-deployment
+  labels:
+    app: flights
+spec:
+  replicas: 1
+  selector:
+    matchLables:
+      app: flights
+  template:
+    metadata:
+      labels:
+        app: flights
+    spec:
+      containers:
+        - name: flights
+          image: public.eks.aws/b9s2q8s8/utopia_backend_flights_microservice
+          ports:
+            - containerPort: 5000
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-deployment
+  labels:
+    app: users
+spec:
+  replicas: 1
+  selector:
+    matchLables:
+      app: users
+  template:
+    metadata:
+      labels:
+        app: users
+    spec:
+      containers:
+        - name: users
+          image: public.eks.aws/b9s2q8s8/utopia_backend_users_microservice
+          ports:
+            - containerPort: 5000
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-producers-deployment
+  labels:
+    app: data_producers
+spec:
+  replicas: 1
+  selector:
+    matchLables:
+      app: data_producers
+  template:
+    metadata:
+      labels:
+        app: data_producers
+    spec:
+      containers:
+        - name: users
+          image: public.eks.aws/b9s2q8s8/utopia_backend_data_producers_microservice
+          ports:
+            - containerPort: 5000
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin-deployment
+  labels:
+    app: admin
+spec:
+  replicas: 1
+  selector:
+    matchLables:
+      app: admin
+  template:
+    metadata:
+      labels:
+        app: admin
+    spec:
+      containers:
+        - name: admin
+          image: public.eks.aws/b9s2q8s8/utopia_frontend_admin_microservice
+          ports:
+            - containerPort: 5000
