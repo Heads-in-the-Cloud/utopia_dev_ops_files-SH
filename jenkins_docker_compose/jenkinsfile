@@ -15,11 +15,7 @@ pipeline {
     stages {
         stage("Environment Loading") {
             steps {
-                echo 'Beginning environmental variables loading...'
-                script {
-                    env.SECRET_KEY = "ThisIsABadSecretKey"
-                    env.DB_ACCESS_URI = "${RDS_DB_URI_SH}"
-                }
+                echo 'Environmental variables loading...'
             }
         }
 
