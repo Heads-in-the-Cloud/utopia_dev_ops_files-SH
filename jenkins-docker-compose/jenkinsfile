@@ -46,7 +46,7 @@ pipeline {
             steps {
                 echo 'Bringing services down...'
                 dir("jenkins-docker-compose") {
-                    sh 'docker compose down'
+                    sh 'docker-compose down'
                 }
                 sh 'docker context use default'
             }
