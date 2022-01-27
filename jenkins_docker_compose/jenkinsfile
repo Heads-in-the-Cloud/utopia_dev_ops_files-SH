@@ -16,19 +16,8 @@ pipeline {
         stage("Environment Loading") {
             steps {
                 echo 'Beginning environmental variables loading...'
-                script {
-                    withCredentials([
-                        string(credentialsId: Jenkins,
-                        variable: 'UtopiaCreds')
-                    ]) {
-                        def jsonObj = readJSON text; UtopiaCreds
-                        env.SECRET_KEY = jsonObj.SECRET_KEY
-                        env.USERNAME = jsonObj.DB_USERNAME
-                        env.PASSWORD = jsonObj.DB_PASSWORD
-                        env.RDS_INST = jsonObj.RDS_INST
-                        env.DB_ACCESS_URI = "${USERNAME}:${PASSWORD}@${RDS_INST}"
-                    }
-                }
+                env.SECRET_KEY = "ThisIsABadSecretKey"
+                env.DB_ACCESS_URI = "${RDS_DB_URI_SH}"
             }
         }
 
