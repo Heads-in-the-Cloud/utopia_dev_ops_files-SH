@@ -18,7 +18,10 @@ pipeline {
             steps {
                 echo 'Beginning environmental variables loading...'
                 script {
-                    withCredentials([string:(credentialsId: env.SECRET_ID, variable: 'UtopiaCreds')]) {
+                    withCredentials([
+                        string(credentialsId: env.SECRET_ID,
+                        variable: 'UtopiaCreds')
+                    ]) {
                         def jsonObj = readJSON text; UtopiaCreds
                         env.SECRET_KEY = jsonObj.SECRET_KEY
                         env.USERNAME = jsonObj.DB_USERNAME
