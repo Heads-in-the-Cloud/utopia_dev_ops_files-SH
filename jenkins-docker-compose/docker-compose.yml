@@ -31,10 +31,6 @@ services:
     environment:
       - SECRET_KEY
       - DB_ACCESS_URI
-    depends_on:
-      - users
-      - flights
-      - bookings
 
   admin:
     image: seanhorner/utopia_frontend_admin_microservice
@@ -42,7 +38,3 @@ services:
       - SECRET_KEY
     ports:
       - "5000:5000"
-    depends_on:
-      - users
-      - flights
-      - bookings
