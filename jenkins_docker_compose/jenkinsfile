@@ -18,7 +18,7 @@ pipeline {
                 echo 'Beginning environmental variables loading...'
                 script {
                     withCredentials([
-                        string(credentialsId: env.SECRET_ID,
+                        string(credentialsId: Jenkins,
                         variable: 'UtopiaCreds')
                     ]) {
                         def jsonObj = readJSON text; UtopiaCreds
