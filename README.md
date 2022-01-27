@@ -1,2 +1,3 @@
-# dev_ops-SH
-Repository of various DevOps files (Dockerfiles, docker-compose, kube-ctl, terraform, etc.) 
+# Utopia Airlines Project DevOps Files
+
+Repository of various DevOps files (Dockerfiles, Docker-Compose files, Kubernetes, Jenkinsfiles, Terraform plans, Ansible playbooks, etc.) 
