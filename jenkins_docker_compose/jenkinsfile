@@ -7,7 +7,7 @@ pipeline {
 
     environment {
         ECS_CONTEXT_NAME = "aws_ecs-sh"
-        ORG_ECR_URI = '${ORG_ACCOUNT_NUM}.dkr.ecr.${region}.amazonaws.com'
+        ORG_ECR_URI = "${ORG_ACCOUNT_NUM}.dkr.ecr.${region}.amazonaws.com"
         SECRET_ID = 'dev/SeanH/utopia-secrets'
         COMPOSE_FILE = "jenkins_docker_compose/docker-compose.yml"
     }
@@ -22,8 +22,8 @@ pipeline {
         stage("Docker-Compose Set-Up") {
             steps {
                 echo 'Setting up Docker context and getting repo credentials...'
-                sh 'docker context use ${ECS_CONTEXT_NAME}'
-                sh 'aws ecr get-login-password --region ${region} |docker login --username AWS --password-stdin ${ORG_ECR_URI}'
+                sh "docker context use ${ECS_CONTEXT_NAME}"
+                sh "aws ecr get-login-password --region ${region} |docker login --username AWS --password-stdin ${ORG_ECR_URI}"
             }
         }
 
