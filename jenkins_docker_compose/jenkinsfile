@@ -9,7 +9,6 @@ pipeline {
         ECS_CONTEXT_NAME = "aws_ecs-sh"
         ORG_ECR_URI = "${ORG_ACCOUNT_NUM}.dkr.ecr.${region}.amazonaws.com"
         SECRET_ID = 'dev/SeanH/utopia-secrets'
-        COMPOSE_FILE = "jenkins_docker_compose/docker-compose.yml"
     }
 
     stages {
@@ -30,7 +29,9 @@ pipeline {
         stage("Docker-Compose Deployment") {
             steps {
                 echo 'Bringing services online...'
-                sh 'docker-compose -f ${COMPOSE_FILE} up'
+                dir("jenkins_docker_compose") {
+                    sh 'docker-compose up'
+                }
             }
         }
 
@@ -44,7 +45,9 @@ pipeline {
         stage("Docker-Compose Take Down") {
             steps {
                 echo 'Bringing services down...'
-                sh 'docker-compose -f ${COMPOSE_FILE} down'
+                dir("jenkins_docker_compose") {
+                    sh 'docker-compose down'
+                }
                 sh 'docker context use default'
             }
         }
