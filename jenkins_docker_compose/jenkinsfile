@@ -2,7 +2,6 @@ pipeline {
     agent {
         node {
             label 'aws-ready'
-            customWorkspace "${SH_ECS_DIRECTORY}"
         }
     }
 
