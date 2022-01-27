@@ -29,7 +29,7 @@ pipeline {
         stage("Docker-Compose Deployment") {
             steps {
                 echo 'Bringing services online...'
-                dir("jenkins_docker_compose") {
+                dir("jenkins-docker-compose") {
                     sh 'docker compose up'
                 }
             }
@@ -45,7 +45,7 @@ pipeline {
         stage("Docker-Compose Take Down") {
             steps {
                 echo 'Bringing services down...'
-                dir("jenkins_docker_compose") {
+                dir("jenkins-docker-compose") {
                     sh 'docker compose down'
                 }
                 sh 'docker context use default'
