@@ -9,14 +9,14 @@ pipeline {
         ECS_CONTEXT_NAME = "aws_ecs-sh"
         ORG_ECR_URI = "${ORG_ACCOUNT_NUM}.dkr.ecr.${region}.amazonaws.com"
         SECRET_ID = 'dev/SeanH/utopia-secrets'
+        SECRET_KEY="This:Is:A:Bad:Secret:Quay"
+        DB_ACCESS_URI="sqlite:///database.db"
     }
 
     stages {
         stage("Environment Loading") {
             steps {
                 echo 'Environmental variables loading...'
-                SECRET_KEY="This:Is:A:Bad:Secret:Quay"
-                DB_ACCESS_URI="sqlite:///database.db"
             }
         }
 
