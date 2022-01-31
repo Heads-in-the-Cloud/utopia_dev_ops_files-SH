@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        ECS_CONTEXT_NAME = "default"
+        ECS_CONTEXT_NAME = "aws_ecs-sh"
         ORG_ECR_URI = "${ORG_ACCOUNT_NUM}.dkr.ecr.${region}.amazonaws.com"
         SECRET_ID = 'dev/SeanH/utopia-secrets'
     }
@@ -30,7 +30,7 @@ pipeline {
             steps {
                 echo 'Bringing services online...'
                 dir("jenkins-docker-compose") {
-                    sh 'docker-compose up -d'
+                    sh 'docker compose up'
                 }
             }
         }
@@ -46,7 +46,7 @@ pipeline {
             steps {
                 echo 'Bringing services down...'
                 dir("jenkins-docker-compose") {
-                    sh 'docker-compose down'
+                    sh 'docker compose down'
                 }
                 sh 'docker context use default'
             }
