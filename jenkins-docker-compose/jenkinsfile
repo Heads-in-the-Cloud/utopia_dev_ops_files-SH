@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        ECS_CONTEXT_NAME = "aws_ecs-sh"
+        ECS_CONTEXT_NAME = "default"
         ORG_ECR_URI = "${ORG_ACCOUNT_NUM}.dkr.ecr.${region}.amazonaws.com"
         SECRET_ID = 'dev/SeanH/utopia-secrets'
     }
