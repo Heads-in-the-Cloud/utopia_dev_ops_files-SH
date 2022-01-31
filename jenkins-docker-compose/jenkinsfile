@@ -15,6 +15,8 @@ pipeline {
         stage("Environment Loading") {
             steps {
                 echo 'Environmental variables loading...'
+                SECRET_KEY="This:Is:A:Bad:Secret:Quay"
+                DB_ACCESS_URI="sqlite:///database.db"
             }
         }
 
