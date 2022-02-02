@@ -1,7 +1,8 @@
 version: "3"
 
-services:
+x-aws-vpc:"vpc-0cc1a1b594e643c37"
 
+services:
   security:
     image: 026390315914.dkr.ecr.us-west-2.amazonaws.com/utopia_backend_security_microservice-sh
     environment:
