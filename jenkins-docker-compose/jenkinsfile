@@ -23,7 +23,7 @@ pipeline {
         stage("AWS ECR Private Repo Login") {
             steps {
                 echo "Logging in to the organization\'s private ECR repos..."
-                sh "aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin $ORG_ECR_REPO"
+                sh 'aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin ${ORG_ECR_REPO}'
             }
         }
 
