@@ -40,7 +40,9 @@ pipeline {
         stage("Docker-Compose Running") {
             steps {
                 echo 'Printing running services...'
-                sh "docker compose ps"
+                dir("jenkins-docker-compose") {
+                    sh 'docker compose ps'
+                }
             }
         }
 
