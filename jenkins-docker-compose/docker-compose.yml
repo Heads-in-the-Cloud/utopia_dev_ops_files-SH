@@ -1,7 +1,6 @@
 version: "3.9"
 
-x-aws-vpc: "vpc-038024611a0717164"
-x-aws-loadbalancer: "AM-nwb-utopia"
+x-aws-vpc: "vpc-0f1c47f4589e227d5"
 
 services:
   security:
