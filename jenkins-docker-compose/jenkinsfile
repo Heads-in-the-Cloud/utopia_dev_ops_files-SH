@@ -23,7 +23,7 @@ pipeline {
         stage("Docker-Compose Set-Up") {
             steps {
                 echo 'Setting up Docker context and getting repo credentials...'
-                sh "docker context use ${ECS_CONTEXT_NAME}"
+                sh "docker context use default"
                 sh "aws ecr get-login-password --region ${region} |docker login --username AWS --password-stdin ${ORG_ECR_URI}"
             }
         }
@@ -43,6 +43,13 @@ pipeline {
                 dir("jenkins-docker-compose") {
                     sh 'docker compose ps'
                 }
+            }
+        }
+        
+        stage("Keep Alive") {
+            steps {
+                echo 'Keeping setup alive for 10 minutes...'
+                sleep 600
             }
         }
 
