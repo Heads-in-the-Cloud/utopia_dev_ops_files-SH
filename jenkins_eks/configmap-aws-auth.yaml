@@ -14,5 +14,5 @@ data:
       - system:bootstrappers
       - system:nodes
       - system:node-proxier
-      rolearn: arn:aws:iam::026390315914:role/eksctl-wc-cluster-FargatePodExecutionRole-1SETFFODOYN3D
+      rolearn:
       username: system:node:{{SessionName}}
