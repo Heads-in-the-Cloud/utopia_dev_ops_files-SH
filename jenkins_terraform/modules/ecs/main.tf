@@ -22,61 +22,27 @@ resource "aws_route53_record" "utopia_record" {
 
 // Security
 
+variable "ingress_list" {
+  type = list(number)
+  description = "List of ingress ports to add to security group."
+  default = [22, 5000, 5010, 5020, 5030, 5040, 5050]
+}
+
 resource "aws_security_group" "ecs_api_security" {
   name = "ecs-allow-apis-SH"
   description = "Open SSH and all API ports"
   vpc_id = var.vpc_id
 
-  # SSH port
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # Data API ports
-  ingress {
-    from_port   = 5010
-    to_port     = 5010
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 5020
-    to_port     = 5020
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 5030
-    to_port     = 5030
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 5040
-    to_port     = 5040
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 5050
-    to_port     = 5050
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # Auth API port
-  ingress {
-    from_port   = 8443
-    to_port     = 8443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+  # Incoming ports 
+  dyanmic "ingress" {
+    for_each    = var.ingress_list
+    iterator    = port
+    content {
+      from_port   = port.value
+      to_port     = port.value
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
   }
 
   # outgoing coverage
