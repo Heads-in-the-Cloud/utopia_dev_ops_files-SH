@@ -1,9 +1,5 @@
 pipeline {
-  agent {
-      node {
-          label "aws-ready"
-      }
-  }
+  agent { node { label "aws-ready" } }
 
   stages {
 
@@ -24,13 +20,13 @@ pipeline {
                       classpath: [], 
                       sandbox: false, 
                       script: 
-                          "return['Could not load actions']"
+                        "return['Could not load actions']"
                   ], 
                   script: [
                       classpath: [], 
                       sandbox: false, 
                       script: 
-                          "return['start','stop']"
+                        "return['start','stop']"
                   ]
                 ]
               ],
@@ -51,7 +47,7 @@ pipeline {
                     sandbox: false, 
                     script: '''
                     if(action.equals("start")){
-                        return["dev","prod"]
+                      return["dev","prod"]
                     }
                     '''
                   ] 
@@ -64,58 +60,34 @@ pipeline {
     }
 
     stage("Terraform Initialization") {
-      when {
-        expression {
-          return params.action =='start'
-        }
-      }
+      when { expression { return params.action =='start' } }
       steps {
         echo "Initializing Terraform Deployment..."
-        dir("project") {
           sh "terraform init"
-        }
       }
     }
 
     stage("Terraform Plan") {
-      when {
-        expression {
-          return params.action =='start'
-        }
-      }
+      when { expression { return params.action =='start' } }
       steps {
         echo "Planning Terraform Deployment..."
-        dir("project") {
-          sh "terraform plan"
-        }
+          sh "terraform plan -json -out=terraform_plan_${System.currentTimeMillis()}.json"
       }
     }
     
     stage("Terraform Deployment") {
-      when {
-        expression {
-          return params.action =='start'
-        }
-      }
+      when { expression { return params.action =='start' } }
       steps {
         echo "Bringing infrastructure online..."
-        dir("project") {
           sh "terraform apply -auto-approve"
-        }
       }
     }
 
     stage("Terraform Destroy") {
       steps {
-        when {
-          expression { 
-            return params.action == 'stop'
-          }
-        }
+        when { expression { return params.action =='stop' } }
         echo "Bringing infrastructure down..."
-        dir("project") {
           sh "terraform destroy -auto-approve"
-        }
       }
     }
   }
