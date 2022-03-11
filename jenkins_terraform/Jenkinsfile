@@ -63,7 +63,9 @@ pipeline {
       when { expression { return params.action =='start' } }
       steps {
         echo "Initializing Terraform Deployment..."
+        dir("jenkins_terraform") {
           sh "terraform init"
+        }
       }
     }
 
@@ -71,7 +73,9 @@ pipeline {
       when { expression { return params.action =='start' } }
       steps {
         echo "Planning Terraform Deployment..."
+        dir("jenkins_terraform") {
           sh "terraform plan -json -out=terraform_plan_${System.currentTimeMillis()}.json"
+        }
       }
     }
     
@@ -79,7 +83,9 @@ pipeline {
       when { expression { return params.action =='start' } }
       steps {
         echo "Bringing infrastructure online..."
+        dir("jenkins_terraform") {
           sh "terraform apply -auto-approve"
+        }
       }
     }
 
@@ -87,7 +93,9 @@ pipeline {
       steps {
         when { expression { return params.action =='stop' } }
         echo "Bringing infrastructure down..."
+        dir("jenkins_terraform") {
           sh "terraform destroy -auto-approve"
+        }
       }
     }
   }
