@@ -97,7 +97,7 @@ pipeline {
       when { expression { return params.action =='start' } }
       steps {
         echo "Printing Terraform graph to DOT file..."
-        sh "terraform graph -type=plan | dot -Tsvg -o terraform_graph_${CURR_TIME}.svg"
+        sh "terraform graph -type=plan | dot -Tpng > terraform_graph_${CURR_TIME}.png"
       }
     }
     
