@@ -1,5 +1,6 @@
 terraform {
     backend "s3" {
+      region = "${region}"
       bucket = "sh-utopia-bucket"
       key = "state.tfstate"
   }
