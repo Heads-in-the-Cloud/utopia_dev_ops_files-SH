@@ -34,7 +34,7 @@ resource "aws_security_group" "ecs_api_security" {
   vpc_id = var.vpc_id
 
   # Incoming ports 
-  dyanmic "ingress" {
+  dynamic "ingress" {
     for_each    = var.ingress_list
     iterator    = port
     content {
