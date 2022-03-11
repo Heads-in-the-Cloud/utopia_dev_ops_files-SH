@@ -1,6 +1,6 @@
 terraform {
     backend "s3" {
-      region = "${region}"
+      region = "us-west-2"
       bucket = "sh-utopia-bucket"
       key = "state.tfstate"
   }
