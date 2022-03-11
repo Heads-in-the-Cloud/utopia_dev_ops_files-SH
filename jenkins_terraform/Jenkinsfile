@@ -97,8 +97,7 @@ pipeline {
       when { expression { return params.action =='start' } }
       steps {
         echo "Printing Terraform graph to DOT file..."
-        sh "terraform graph -type=plan > terraform_graph_${CURR_TIME}.dot"
-        sh "dot -Tpng terraform_graph_${CURR_TIME}.dot > terraform_graph_${CURR_TIME}.png"
+        sh "terraform graph -type=plan | neato -Tpng > terraform_graph_${CURR_TIME}.png"
       }
     }
     
