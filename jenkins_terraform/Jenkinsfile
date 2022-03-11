@@ -1,6 +1,10 @@
 pipeline {
   agent { node { label "aws-ready" } }
 
+  environment {
+    CURR_TIME = System.currentTimeMillis()
+  }
+
   stages {
 
     stage('Setup parameters') {
@@ -69,13 +73,33 @@ pipeline {
       }
     }
 
+    stage("Terraform Validation") {
+      when { expression { return params.action =='start' } }
+      steps {
+        echo "Validating Terraform deployment config files..."
+        dir("jenkins_terraform") {
+          sh "terraform validate"
+        }
+      }
+    }
+
     stage("Terraform Plan") {
       when { expression { return params.action =='start' } }
       steps {
         echo "Planning Terraform Deployment..."
         dir("jenkins_terraform") {
-          sh "terraform plan -json -out=terraform_plan_${System.currentTimeMillis()}.json"
+          sh "terraform plan -json -out=terraform_plan_${CURR_TIME}.json"
         }
+      }
+    }
+
+    stage("Terraform Graph") {
+      when { expression { return params.action =='start' } }
+      steps {
+        echo "Printing Terraform graph to DOT file..."
+
+        sh "terraform graph -out=terraform_graph_${CURR_TIME}.DOT"
+        sh "dot -Tsvg terraform_graph_${CURR_TIME}.DOT > terraform_graph_${CURR_TIME}.svg"
       }
     }
     
@@ -89,9 +113,19 @@ pipeline {
       }
     }
 
-    stage("Terraform Destroy") {
+    stage("Terraform Show") {
       steps {
-        when { expression { return params.action =='stop' } }
+        echo "Displaying current infrastructure for project..."
+        dir("jenkins_terraform") {
+          sh "terraform state show"
+          sh "terraform state show > terraform_state_${CURR_TIME}"
+        }
+      }
+    }
+
+    stage("Terraform Destroy") {
+      when { expression { return params.action =='stop' } }
+      steps {
         echo "Bringing infrastructure down..."
         dir("jenkins_terraform") {
           sh "terraform destroy -auto-approve"
