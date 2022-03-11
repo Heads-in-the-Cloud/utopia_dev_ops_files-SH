@@ -116,7 +116,7 @@ pipeline {
       steps{
         script{
 
-          sh "eksctl create cluster --name=${CLUSTER_NAME_SH} --region=${AWS_REGION} --fargate \
+          sh "eksctl create cluster --name=${CLUSTER_NAME_SH} --region=${AWS_REGION} \
           --vpc-private-subnets=${private_subnet1},${private_subnet2}"  
                   
         }
