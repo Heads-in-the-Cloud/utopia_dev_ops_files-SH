@@ -113,12 +113,12 @@ pipeline {
       }
     }
 
-    stage("Terraform Show") {
+    stage("Terraform State List") {
       steps {
         echo "Displaying current infrastructure for project..."
         dir("jenkins_terraform") {
-          sh "terraform state show"
-          sh "terraform state show > terraform_state_${CURR_TIME}"
+          sh "terraform state list"
+          sh "terraform state list > terraform_state_${CURR_TIME}"
         }
       }
     }
