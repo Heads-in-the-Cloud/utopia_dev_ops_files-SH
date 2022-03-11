@@ -89,7 +89,7 @@ pipeline {
       when { expression { return params.action =='start' } }
       steps {
         echo "Logging in to the organization\'s private ECR repos..."
-        sh "aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin $ORG_ECR_REPO"
+        sh "aws ecr get-login-password --region ${region} |docker login --username AWS --password-stdin ${ORG_ECR_URI}"
       }
     }
 
@@ -98,7 +98,6 @@ pipeline {
       steps {
         echo "Setting up Docker context and getting repo credentials..."
         sh "docker context use ${ECS_CONTEXT_NAME}"
-        sh "aws ecr get-login-password --region ${region} |docker login --username AWS --password-stdin ${ORG_ECR_URI}"
       }
     }
 
@@ -112,12 +111,28 @@ pipeline {
       }
     }
 
+    stage("Docker Context Change [Shutdown]") {
+      when { expression { return params.action == "stop" } }
+      steps {
+        echo "Switching Docker context for shut down..."
+        sh "docker context use ${ECS_CONTEXT_NAME}"
+      }
+    }
+
     stage("Docker-Compose Running") {
       steps {
         echo "Printing running services..."
         dir("jenkins_docker_compose") {
           sh "docker compose ps"
         }
+      }
+    }
+
+    stage("Docker Context Revert [Start Up]") {
+      when { expression { return params.action == "start" } }
+      steps {
+        echo "Switching Docker context back after start up..."
+        sh "docker context use default"
       }
     }
 
